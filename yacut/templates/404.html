@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Ошибка 404 (Страница не найдена!){% endblock %}
+{% block content %}
+  <main>
+    <section class="container my-5 px-4">
+      <h2>Ошибка <span style="color: red;">404</span>. Такой короткой ссылки нет.</h2>
+      <a href="{{ url_for('index_view') }}">Может создадите свою?</a>
+    </section>
+  </main>
+{% endblock %}
