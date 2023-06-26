@@ -1,4 +1,3 @@
-import random
 from http import HTTPStatus
 
 from flask import render_template, flash, request, redirect, abort
@@ -6,18 +5,7 @@ from flask import render_template, flash, request, redirect, abort
 from . import app, db
 from .forms import CutForm
 from .models import URLMap
-from .constants import RANDOM_SHORT_LINK_LEN, ALLOWED_CHARACTERS
-
-
-def get_unique_short_id() -> str:
-    """Return random string with latin letters and numbers."""
-    allowed_characters = list(ALLOWED_CHARACTERS)
-    random_id = ''.join(random.choices(
-        allowed_characters, k=RANDOM_SHORT_LINK_LEN))
-    while URLMap.query.filter_by(short=random_id).first() is not None:
-        random_id = ''.join(random.choices(
-            allowed_characters, k=RANDOM_SHORT_LINK_LEN))
-    return random_id
+from .utils import get_unique_short_id
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -42,7 +30,5 @@ def index_view():
 @app.route('/<string:short_id>', methods=['GET'])
 def get_full_link(short_id):
     """Redirects the user when he visits a short link, if it exists."""
-    url = URLMap.query.filter_by(short=short_id).first()
-    if url is None:
-        abort(HTTPStatus.NOT_FOUND)
+    url = URLMap.query.filter_by(short=short_id).first_or_404()
     return redirect(url.original)
