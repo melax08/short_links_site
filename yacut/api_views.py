@@ -31,7 +31,7 @@ def add_url():
 
     custom_id = data.get('custom_id')
 
-    if not custom_id:
+    if custom_id:
         if (len(custom_id) > MAX_SHORT_LINK_LEN or
                 not validate_short_link(custom_id)):
             raise InvalidAPIUsage(
@@ -41,7 +41,7 @@ def add_url():
 
     url = URLMap()
     url.from_dict(data)
-    if custom_id is None or len(custom_id) == 0:
+    if not custom_id:
         url.short = get_unique_short_id()
     db.session.add(url)
     db.session.commit()
