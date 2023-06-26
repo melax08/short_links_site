@@ -1,6 +1,4 @@
-from http import HTTPStatus
-
-from flask import render_template, flash, request, redirect, abort
+from flask import render_template, flash, request, redirect
 
 from . import app, db
 from .forms import CutForm
